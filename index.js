@@ -18,5 +18,6 @@ app.get("/", (req, res) => {
 
 app.use("/v1/designation", require("./Routes/Designation"));
 app.use("/v1/user-role", require("./Routes/UserRole"));
+app.use("/v1/user", require("./Routes/User"));
 
 app.listen(port, () => console.log(`Server started on port ${port}`));

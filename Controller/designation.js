@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const Designation = require("../Model/designation");
-const API_KEY = "geekwebsolution";
 
 const setDesignation = asyncHandler(async (req, res) => {
     if (!req.body) {
