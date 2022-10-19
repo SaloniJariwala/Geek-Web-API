@@ -16,4 +16,9 @@ const getDesignation = asyncHandler(async (req, res) => {
     res.status(200).json(allDesig);
 });
 
-module.exports = { getDesignation, setDesignation };
+const getDesignationById = asyncHandler(async (req, res) => {
+    const desig = await Designation.findById(req.params.id);
+    res.status(200).json(desig);
+});
+
+module.exports = { getDesignation, setDesignation, getDesignationById };

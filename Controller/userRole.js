@@ -16,4 +16,9 @@ const getUserRole = asyncHandler(async (req, res) => {
     res.status(200).json(allUserRoles);
 });
 
-module.exports = { getUserRole, setUserRole };
+const getUserRoleById = asyncHandler(async (req, res) => {
+    const userRole = await UserRole.findById(req.params.id);
+    res.status(200).json(userRole);
+});
+
+module.exports = { getUserRole, setUserRole, getUserRoleById };
