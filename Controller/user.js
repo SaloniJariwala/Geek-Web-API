@@ -50,4 +50,19 @@ const getUserById = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { setUser, getAllUsers, getUserById };
+const updateUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.params.id);
+    if(!user) {
+        res.status(404).json({ error: 'User not found' });
+    }
+    try {
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
+            new: true,
+        });
+        res.status(200).json(updatedUser);
+    } catch (e) {
+        res.status(400).json({ error: e.message });
+    }
+});
+
+module.exports = { setUser, getAllUsers, getUserById, updateUser };
