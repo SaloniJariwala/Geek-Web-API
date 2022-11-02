@@ -16,13 +16,14 @@ const signInUser = asyncHandler(async (req, res) => {
         }
         const passwordMatched = bcrypt.compare(req.body.password, selectedUser.password);
         if (!passwordMatched) {
-            return res.status(400).send("Your password is incorrect");
+            res.status(400).send("Your password is incorrect");
+        } else {
+            const token = jwt.sign({
+                id: selectedUser._id,
+                email: selectedUser.companyEmail
+            }, SECRET_KEY);
+            res.status(200).json({ user: selectedUser, token });
         }
-        const token = jwt.sign({
-            id: selectedUser._id,
-            email: selectedUser.companyEmail
-        }, SECRET_KEY);
-        res.status(200).json({ user: selectedUser, token });
     } catch (e) {
         res.status(400).json({ error: e.message });
     }
