@@ -12,17 +12,18 @@ const signInUser = asyncHandler(async (req, res) => {
     try {
         const selectedUser = await user.findOne({ companyEmail: req.body.email });
         if (!selectedUser) {
-            return res.status(404).send("User Not Found");
-        }
-        const passwordMatched = bcrypt.compare(req.body.password, selectedUser.password);
-        if (!passwordMatched) {
-            res.status(400).send("Your password is incorrect");
+            res.status(404).send("User Not Found");
         } else {
-            const token = jwt.sign({
-                id: selectedUser._id,
-                email: selectedUser.companyEmail
-            }, SECRET_KEY);
-            res.status(200).json({ user: selectedUser, token });
+            const passwordMatched = bcrypt.compare(req.body.password, selectedUser.password);
+            if (!passwordMatched) {
+                res.status(400).send("Your password is incorrect");
+            } else {
+                const token = jwt.sign({
+                    id: selectedUser._id,
+                    email: selectedUser.companyEmail
+                }, SECRET_KEY);
+                res.status(200).json({ user: selectedUser, token });
+            }
         }
     } catch (e) {
         res.status(400).json({ error: e.message });
