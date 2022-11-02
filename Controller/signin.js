@@ -16,7 +16,7 @@ const signInUser = asyncHandler(async (req, res) => {
         } else {
             const passwordMatched = await bcrypt.compare(req.body.password, selectedUser.password);
             if (!passwordMatched) {
-                res.status(400).send("Your password is incorrect");
+                res.status(200).send("Your password is incorrect");
             } else {
                 const token = jwt.sign({
                     id: selectedUser._id,
