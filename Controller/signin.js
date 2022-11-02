@@ -11,10 +11,14 @@ const signInUser = asyncHandler(async (req, res) => {
     }
     try {
         const selectedUser = await user.findOne({ companyEmail: req.body.email });
+        console.log(selectedUser, "====> SELECTED_USER");
         if (!selectedUser) {
             res.status(404).send("User Not Found");
+            console.log("USER NOT FOUND");
         } else {
+            console.log("USER FOUND");
             const passwordMatched = bcrypt.compare(req.body.password, selectedUser.password);
+            console.log("PASSWORD MATCHED", passwordMatched);
             if (!passwordMatched) {
                 res.status(400).send("Your password is incorrect");
             } else {
