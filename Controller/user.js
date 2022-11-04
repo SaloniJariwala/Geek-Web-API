@@ -1,7 +1,6 @@
 const User = require("../Model/user");
 const bcrypt = require("bcryptjs");
 const asyncHandler = require('express-async-handler');
-
 const setUser = asyncHandler(async (req, res) => {
     if (!req.body) {
         res.status(400);
@@ -78,4 +77,20 @@ const deleteUser = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { setUser, getAllUsers, getUserById, updateUser, deleteUser };
+const changePassword = asyncHandler(async  (req, res) => {
+    const user = await User.findById(req.params.id);
+    if(!user) {
+        res.status(404).json({ error: 'User not found' });
+    }
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
+        await User.findByIdAndUpdate(req.params.id, {
+            password: hashedPassword
+        });
+        res.status(200).json({ success: "success", message: 'Password change successfully' });
+    } catch (e) {
+        res.status(400).json({ error: e.message });
+    }
+});
+
+module.exports = { setUser, getAllUsers, getUserById, updateUser, deleteUser, changePassword };
